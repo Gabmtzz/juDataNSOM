@@ -41,6 +41,27 @@ function read_FileData(mo,dy,ind)
     dataExt = keys(fNs[groupF[2]])
     datAmp = read(fNs[groupF[2]*"/"*dataExt[1]]); datFase = read(fNs[groupF[2]*"/"*dataExt[2]]) 
 
-    return datMeas,datAmp,datFase
+    return datMeas,transpose(datAmp),transpose(datFase)
 
+end
+
+function get_Attributes(mo,dy)
+    NameFiles, direction = get_filesNames(mo,dy)
+
+    cd(direction)
+    fname = direction*"/"*NameFiles[1]
+    fNs = h5open(fname,"r")
+    
+    groupF = keys(fNs)
+    dataSm = keys(fNs[groupF[1]])
+    datMeasAtr = fNs[groupF[1]*"/"*dataSm[1]]
+    nameAttr = keys(attributes(datMeasAtr))
+    AttrVal = []
+    
+    for i ∈ eachindex(nameAttr)
+        
+        push!(AttrVal,read_attribute(datMeasAtr,nameAttr[i]))
+    end
+    
+    hcat(nameAttr,AttrVal)
 end

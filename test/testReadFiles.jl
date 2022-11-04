@@ -18,4 +18,9 @@
         data,_ = DataAnNSOM.read_FileData(10,12,1)
         @test typeof(data) == Array{Float64,3}
     end
+
+    @testset "get attributes" begin
+        AttrM = DataAnNSOM.get_Attributes(10,12)
+        @test size(AttrM) == (7,2)
+    end
 end
