@@ -1,3 +1,5 @@
+using LinearAlgebra
+
 function EraseZeros(data,i)
     datVec = data[i,:]
     ind = length(datVec); flag = true; j = length(datVec)
@@ -36,4 +38,26 @@ function GetArrdat(imArr,data)
         end
     end
     DatArrS
+end
+
+function getErrArr(DataS,imArr)
+    imErr = zeros(size(imArr))
+
+    for i ∈ 1:size(imErr,2)
+        for j ∈ 1:size(imErr,1)
+            imErr[j,i] = (DataS[j,i][1] -DataS[j,i][end])/DataS[j,i][1]
+        end
+    end
+    imErr
+end
+
+function GetDifAmp(DataS,imArr)
+    imDif = zeros(size(imArr))
+
+    for i ∈ 1:size(imDif,2)
+        for j ∈ 1:size(imDif,1)
+            imDif[j,i] = DataS[j,i][1] -DataS[j,i][end]
+        end
+    end
+    imDif
 end
