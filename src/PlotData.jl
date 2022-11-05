@@ -1,13 +1,13 @@
 using Interpolations,LaTeXStrings,Plots; pyplot()
 
-function plotImag(mo,dy,datIm, labelT,nEl)
+function plotImag(mo,dy,datIm, labelT,nEl,i)
     x = 1:1:size(datIm,1); y = 1:1:size(datIm,2)
     itp = LinearInterpolation((x,y),datIm)
 
     x2 = range(extrema(x)..., length=300); y2 = range(extrema(y)..., length=900)
     z2 = [itp(x,y) for y in y2, x in x2]
 
-    AtrM = get_Attributes(mo,dy)
+    AtrM = get_Attributes(mo,dy,i)
     
     xBeg,xEnd = AtrM[1,2],AtrM[5,2]; yBeg,yEnd = AtrM[2,2],AtrM[6,2]   
 
@@ -18,9 +18,9 @@ function plotImag(mo,dy,datIm, labelT,nEl)
 
 end
 
-function plotProfile(mo,dy,datIm, labelT,nEl,index)
+function plotProfile(mo,dy,datIm, labelT,nEl,index,i)
     y = 1:1:size(datIm,2)
-    AtrM = DataAnNSOM.get_Attributes(mo,dy)
+    AtrM = DataAnNSOM.get_Attributes(mo,dy,i)
     xBeg,xEnd = AtrM[1,2],AtrM[5,2];
     
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl

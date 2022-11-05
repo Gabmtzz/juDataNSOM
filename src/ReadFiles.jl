@@ -45,11 +45,11 @@ function read_FileData(mo,dy,ind)
 
 end
 
-function get_Attributes(mo,dy)
+function get_Attributes(mo,dy,i)
     NameFiles, direction = get_filesNames(mo,dy)
 
     cd(direction)
-    fname = direction*"/"*NameFiles[1]
+    fname = direction*"/"*NameFiles[i]
     fNs = h5open(fname,"r")
     
     groupF = keys(fNs)
