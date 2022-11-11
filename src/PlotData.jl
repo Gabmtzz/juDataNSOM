@@ -28,11 +28,11 @@ function plotProfile(mo,dy,datIm, labelT,nEl,index,i)
     plot(datIm[index,:], c=:black, label=:none, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd))), xlabel = L"X ~[nm]", ylabel = labelT)
 end
 
-function PlotFilter(PSD,indices,nct)
+function PlotFilter(PSD,indices)
     ns = Int(round(length(PSD)/2))+5
     p = plot(indices[1:ns],color = :red, mark=:xcross,fg = :red,grid=false ,ylabel="Window Function", label="Widnow function", legend=:topright)
-    p = vline!([nct nct], c=:black, line=(1,:dash), label=:none)
-    p = annotate!(nct+0.6,1.0,text(L"n_{cut}", 12, :left, :top, :black))
+    #p = vline!([nct nct], c=:black, line=(1,:dash), label=:none)
+    #p = annotate!(nct+0.6,1.0,text(L"n_{cut}", 12, :left, :top, :black))
     p = plot!(twinx(),PSD[1:ns], yaxis=:log, mark=:circle, color=:black,fg = :black, label=L"\log{C_n}", legend=:right,
              grid=false,ylabel =L"\log{C_n}", xlabel =L"n")
     p
