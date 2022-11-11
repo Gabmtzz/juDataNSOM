@@ -37,3 +37,17 @@ function PlotFilter(PSD,indices)
              grid=false,ylabel =L"\log{C_n}", xlabel =L"n")
     p
 end
+
+function PlotCompProfiles(mo,dy,i,dat1,dat2,label1,label2,nEl)
+    y = 1:1:size(dat1,1)
+    AtrM = DataAnNSOM.get_Attributes(mo,dy,i)
+    xBeg,xEnd = AtrM[1,2],AtrM[5,2];
+        
+    xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl
+    
+    p = plot(dat2, c=:black, label="AFM", xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd))), xlabel = L"X ~[nm]", ylabel = label1, legend=:topleft)
+    p = plot!(twinx(p),c=:red,dat1,ylabel=label2,label="NSOM", line=(1,:dash),legend=:topright)
+    
+    p
+    
+end
