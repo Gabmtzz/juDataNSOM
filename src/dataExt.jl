@@ -43,8 +43,8 @@ end
 function getErrArr(DataS,imArr)
     imErr = zeros(size(imArr))
 
-    for i ∈ 1:size(imErr,2)
-        for j ∈ 1:size(imErr,1)
+    for i ∈ axes(imErr,2)
+        for j ∈ axes(imErr,1)
             imErr[j,i] = (DataS[j,i][1] -DataS[j,i][end])/DataS[j,i][1]
         end
     end
@@ -54,8 +54,8 @@ end
 function GetDifAmp(DataS,imArr)
     imDif = zeros(size(imArr))
 
-    for i ∈ 1:size(imDif,2)
-        for j ∈ 1:size(imDif,1)
+    for i ∈ axes(imDif,2)
+        for j ∈ axes(imDif,1)
             imDif[j,i] = DataS[j,i][1] -DataS[j,i][end]
         end
     end

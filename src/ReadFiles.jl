@@ -1,4 +1,4 @@
-using HDF5
+using HDF5,DelimitedFiles
 
 function get_dir(mo,dy)
     direction ="/home/martinez/Documents/dataNSOM"
@@ -64,4 +64,13 @@ function get_Attributes(mo,dy,i)
     end
     
     hcat(nameAttr,AttrVal)
+end
+
+function getVibData(i)
+    dirVib = "/home/martinez/Documents/frec/archivos/"
+    names = cd(readdir,dirVib)
+    nameFil = names[i]
+    dataVib = readdlm(dirVib*nameFil)
+
+    return dataVib,nameFil
 end
