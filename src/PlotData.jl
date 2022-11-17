@@ -1,4 +1,4 @@
-using Interpolations,LaTeXStrings,Measures,Plots; pyplot()
+using Interpolations,LaTeXStrings,Measures,LazyGrids,Plots; pyplot()
 
 function plotImag(mo,dy,datIm,cm,labelT,nEl,i)
     x = 1:1:size(datIm,1); y = 1:1:size(datIm,2)
@@ -81,4 +81,18 @@ function plotImagwDataEx(mo,dy,imArr,labelT,fi,ArrAmp,ArrFase,YArr,j,cm)
     pDat = plot(pA,pF, layout=(2,1), size =(900,450))
     pIm = plotImag(mo,dy,imArr/1000,cm, labelT,5,fi); pIm = vline!([j j], c=:red, line=(2,:dash), label=:none)
     plot(pIm,pDat, size=(1200,500))
+end
+
+function plot3Ddata(mo,dy,i,zArr,nEl,cm,zlb,ϕ,θ)
+    x,y = 1:size(zArr,1),1:size(zArr,2)
+    AtrM = get_Attributes(mo,dy,i)
+    
+    xBeg,xEnd = AtrM[1,2],AtrM[5,2]; yBeg,yEnd = AtrM[2,2],AtrM[6,2]   
+
+    xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl; yΔ₁,yΔ₂  = (x[end]-x[1])/nEl, (yEnd-yBeg)/nEl
+
+    xArr,yArr = ndgrid(size(zArr,1),size(zArr,2));
+    p = surface(yArr,xArr,zArr,c=cm,camera=(ϕ,θ),colorbar=:none, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd))),
+        yticks = (x[1]:yΔ₁:x[end], string.(collect(yBeg:yΔ₂:yEnd))), xlabel = L"X ~[nm]", ylabel = L"Y ~[nm]",zlabel = zlb)
+    p
 end
