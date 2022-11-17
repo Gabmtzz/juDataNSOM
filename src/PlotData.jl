@@ -43,7 +43,7 @@ function PlotCompProfiles(mo,dy,i,dat1,dat2,label1,label2,nEl)
         
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl
     
-    p = plot(dat2, c=:black, label="AFM", xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd))), xlabel = L"X ~[nm]", ylabel = label1, legend=:topleft)
+    p = plot(dat2, c=:black, label="SFM", xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd))), xlabel = L"X ~[nm]", ylabel = label1, legend=:topleft)
     p = plot!(twinx(p),c=:red,dat1,ylabel=label2,label="NSOM", line=(1,:dash),legend=:topright)
     
     p
@@ -93,6 +93,6 @@ function plot3Ddata(mo,dy,i,zArr,nEl,cm,zlb,ϕ,θ)
 
     xArr,yArr = ndgrid(size(zArr,1),size(zArr,2));
     p = surface(yArr,xArr,zArr,c=cm,camera=(ϕ,θ),colorbar=:none, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd))),
-        yticks = (x[1]:yΔ₁:x[end], string.(collect(yBeg:yΔ₂:yEnd))), xlabel = L"X ~[nm]", ylabel = L"Y ~[nm]",zlabel = zlb, zguidefontrotation=90)
+        yticks = (x[1]:yΔ₁:x[end], string.(collect(yBeg:yΔ₂:yEnd))), xlabel = L"X ~[nm]", ylabel = L"Y ~[nm]",zlabel = zlb,xguidefontrotation = abs(ϕ^3/90^2),yguidefontrotation = abs((90-ϕ)^3/90^2), zguidefontrotation=90)
     p
 end
