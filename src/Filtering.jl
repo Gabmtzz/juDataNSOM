@@ -55,8 +55,8 @@ function getFiltImag1(datIm,n0,nct,option,n=0)
     datFiltr = zeros(size(datIm))
     for i in axes(datIm,1)
         dta = datIm[i,:]
-        _,dataF = DataAnNSOM.GetFourierCoefs1(dta)
-        filtrD,_ = DataAnNSOM.GetFilteredData1(dataF,n0,nct,option,n)
+        _,dataF = GetFourierCoefs1(dta)
+        filtrD,_ = GetFilteredData1(dataF,n0,nct,option,n)
         datFiltr[i,:] = filtrD
     end
     datFiltr

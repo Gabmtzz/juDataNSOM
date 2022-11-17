@@ -20,7 +20,7 @@ end
 
 function plotProfile(mo,dy,datIm, labelT,nEl,index,i)
     y = 1:1:size(datIm,2)
-    AtrM = DataAnNSOM.get_Attributes(mo,dy,i)
+    AtrM = get_Attributes(mo,dy,i)
     xBeg,xEnd = AtrM[1,2],AtrM[5,2];
     
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl
@@ -38,7 +38,7 @@ end
 
 function PlotCompProfiles(mo,dy,i,dat1,dat2,label1,label2,nEl)
     y = 1:1:size(dat1,1)
-    AtrM = DataAnNSOM.get_Attributes(mo,dy,i)
+    AtrM = get_Attributes(mo,dy,i)
     xBeg,xEnd = AtrM[1,2],AtrM[5,2];
         
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl
@@ -79,6 +79,6 @@ function plotImagwDataEx(mo,dy,imArr,labelT,fi,ArrAmp,ArrFase,YArr,j)
     
     pA = plot(AmplArrPl..., size=(600,300), margin=3mm); pF = plot(AmplArrFs..., size=(600,300), margin=3mm)
     pDat = plot(pA,pF, layout=(2,1), size =(900,450))
-    pIm = DataAnNSOM.plotImag(mo,dy,imArr/1000, labelT,5,fi); pIm = vline!([j j], c=:red, line=(2,:dash), label=:none)
+    pIm = plotImag(mo,dy,imArr/1000, labelT,5,fi); pIm = vline!([j j], c=:red, line=(2,:dash), label=:none)
     plot(pIm,pDat, size=(1200,500))
 end
