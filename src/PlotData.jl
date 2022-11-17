@@ -93,6 +93,6 @@ function plot3Ddata(mo,dy,i,zArr,nEl,cm,zlb,ϕ,θ)
 
     xArr,yArr = ndgrid(size(zArr,1),size(zArr,2));
     p = surface(yArr,xArr,zArr,c=cm,camera=(ϕ,θ),colorbar=:none, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd))),
-        yticks = (x[1]:yΔ₁:x[end], string.(collect(yBeg:yΔ₂:yEnd))), xlabel = L"X ~[nm]", ylabel = L"Y ~[nm]",zlabel = zlb)
+        yticks = (x[1]:yΔ₁:x[end], string.(collect(yBeg:yΔ₂:yEnd))), xlabel = L"X ~[nm]", ylabel = L"Y ~[nm]",zlabel = zlb, zguidefontrotation=90)
     p
 end
