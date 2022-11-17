@@ -24,5 +24,4 @@ docs/site/
 Manifest.toml
 .ipynb_checkpoints
 .vscode
-notebook/Wp.ipynb
-notebook/Sqw.ipynb
+notebook/

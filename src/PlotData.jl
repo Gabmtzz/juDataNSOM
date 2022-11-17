@@ -1,6 +1,6 @@
 using Interpolations,LaTeXStrings,Measures,Plots; pyplot()
 
-function plotImag(mo,dy,datIm, labelT,nEl,i)
+function plotImag(mo,dy,datIm,cm,labelT,nEl,i)
     x = 1:1:size(datIm,1); y = 1:1:size(datIm,2)
     itp = LinearInterpolation((x,y),datIm)
 
@@ -13,7 +13,7 @@ function plotImag(mo,dy,datIm, labelT,nEl,i)
 
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl; yΔ₁,yΔ₂  = (x[end]-x[1])/nEl, (yEnd-yBeg)/nEl
 
-    heatmap(y2,x2,z2', c = cgrad(:viridis, rev = false), xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd))),
+    heatmap(y2,x2,z2', c = cm, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd))),
     yticks = (x[1]:yΔ₁:x[end], string.(collect(yBeg:yΔ₂:yEnd))), xlabel = L"X ~[nm]", ylabel = L"Y ~[nm]", colorbar_title = labelT )
 
 end
@@ -68,7 +68,7 @@ function plotFit(datX,datY,label,fitY,error)
     p
 end
 
-function plotImagwDataEx(mo,dy,imArr,labelT,fi,ArrAmp,ArrFase,YArr,j)
+function plotImagwDataEx(mo,dy,imArr,labelT,fi,ArrAmp,ArrFase,YArr,j,cm)
     AmplArrPl = []; AmplArrFs = [] 
 
     for i ∈ YArr
@@ -79,6 +79,6 @@ function plotImagwDataEx(mo,dy,imArr,labelT,fi,ArrAmp,ArrFase,YArr,j)
     
     pA = plot(AmplArrPl..., size=(600,300), margin=3mm); pF = plot(AmplArrFs..., size=(600,300), margin=3mm)
     pDat = plot(pA,pF, layout=(2,1), size =(900,450))
-    pIm = plotImag(mo,dy,imArr/1000, labelT,5,fi); pIm = vline!([j j], c=:red, line=(2,:dash), label=:none)
+    pIm = plotImag(mo,dy,imArr/1000,cm, labelT,5,fi); pIm = vline!([j j], c=:red, line=(2,:dash), label=:none)
     plot(pIm,pDat, size=(1200,500))
 end
