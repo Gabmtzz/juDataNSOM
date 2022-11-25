@@ -29,7 +29,7 @@ end
 function GetFourierCoefs1(data)
     n = length(data)
 
-    dtaF = fft(data)
+    dtaF = fftshift(fft(data))
 
     PSD = real(conj(dtaF).*dtaF)/n
     PSD,dtaF
@@ -46,7 +46,7 @@ function GetFilteredData1(dataF,n0,nc,option,n=0)
 
     fhtat = indices.*dataF
 
-    filtrD = real(ifft(fhtat))
+    filtrD = real(ifft(ifftshift(fhtat)))
 
     return filtrD, indices
 end

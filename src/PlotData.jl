@@ -29,9 +29,8 @@ function plotProfile(mo,dy,datIm, labelT,nEl,index,i)
 end
 
 function PlotFilter(PSD,indices)
-    ns = Int(round(length(PSD)/2))+5
-    p = plot(indices[1:ns],color = :red, mark=:xcross,fg = :red,grid=false ,ylabel="Window Function", xlabel =L"n", label="Widnow function", legend=:topright)
-    p = plot!(twinx(),PSD[1:ns], yaxis=:log, mark=:circle, color=:black,fg = :black, label=L"\log{C_n}", legend=:right,
+    p = plot(indices,color = :red, mark=:xcross,fg = :red,grid=false ,ylabel="Window Function", xlabel =L"n", label="Widnow function", legend=:topleft)
+    p = plot!(twinx(),PSD, yaxis=:log, mark=:circle, color=:black,fg = :black, label=L"\log{C_n}", legend=:topright,
              grid=false,ylabel =L"\log{C_n}")
     p
 end

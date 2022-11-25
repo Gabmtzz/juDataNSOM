@@ -66,6 +66,16 @@ function get_Attributes(mo,dy,i)
     hcat(nameAttr,AttrVal)
 end
 
+function getDataExp(data)
+    if size(data,1) ==3
+        ImAFM,ImNSOM,ImMult = data[1,:,:]/1000,data[2,:,:],-data[3,:,:]
+        return  ImAFM,ImNSOM,ImMult
+    elseif size(data,1) ==1
+        ImAFM = data[1,:,:]/1000
+        return  ImAFM
+    end
+end
+
 function getVibData(i)
     dirVib = "/home/martinez/Documents/frec/archivos/"
     names = cd(readdir,dirVib)
