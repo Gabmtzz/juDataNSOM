@@ -1,6 +1,6 @@
 using Interpolations,LaTeXStrings,Measures,LazyGrids,Plots; pyplot()
 
-function plotImag(mo,dy,datIm,cm,labelT,nEl,i)
+function plotImag(mo,dy,datIm,cm,labelT,nEl,i,micr=false)
     x = 1:1:size(datIm,1); y = 1:1:size(datIm,2)
     itp = LinearInterpolation((x,y),datIm)
 
@@ -13,19 +13,25 @@ function plotImag(mo,dy,datIm,cm,labelT,nEl,i)
 
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl; yΔ₁,yΔ₂  = (x[end]-x[1])/nEl, (yEnd-yBeg)/nEl
 
-    heatmap(y2,x2,z2', c = cm, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd))),
-    yticks = (x[1]:yΔ₁:x[end], string.(collect(yBeg:yΔ₂:yEnd))), xlabel = L"X ~[nm]", ylabel = L"Y ~[nm]", colorbar_title = labelT )
+    fc = micr ? 1000 : 1
+    unit = micr ? L"[\mu m]" : L"[n m]"
+
+    heatmap(y2,x2,z2', c = cm, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd)./fc)),
+    yticks = (x[1]:yΔ₁:x[end], string.(collect(yBeg:yΔ₂:yEnd)./fc)), xlabel = L"X ~"*unit, ylabel = L"Y ~"*unit, colorbar_title = labelT )
 
 end
 
-function plotProfile(mo,dy,datIm, labelT,nEl,index,i)
+function plotProfile(mo,dy,datIm, labelT,nEl,index,i,micr=false)
     y = 1:1:size(datIm,2)
     AtrM = get_Attributes(mo,dy,i)
     xBeg,xEnd = AtrM[1,2],AtrM[5,2];
     
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl
 
-    plot(datIm[index,:], c=:black, label=:none, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd))), xlabel = L"X ~[nm]", ylabel = labelT)
+    fc = micr ? 1000 : 1
+    unit = micr ? L"[\mu m]" : L"[n m]"
+
+    plot(datIm[index,:], c=:black, label=:none, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd)./fc)), xlabel = L"X ~"*unit, ylabel = labelT)
 end
 
 function PlotFilter(PSD,indices)
@@ -35,14 +41,17 @@ function PlotFilter(PSD,indices)
     p
 end
 
-function PlotCompProfiles(mo,dy,i,dat1,dat2,label1,label2,nEl)
+function PlotCompProfiles(mo,dy,i,dat1,dat2,label1,label2,nEl,micr=false)
     y = 1:1:size(dat1,1)
     AtrM = get_Attributes(mo,dy,i)
     xBeg,xEnd = AtrM[1,2],AtrM[5,2];
         
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl
+
+    fc = micr ? 1000 : 1
+    unit = micr ? L"[\mu m]" : L"[n m]"
     
-    p = plot(dat2, c=:black, label="SFM", xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd))), xlabel = L"X ~[nm]", ylabel = label1, legend=:topleft)
+    p = plot(dat2, c=:black, label="AFM", xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd)./fc)), xlabel = L"X ~"*unit, ylabel = label1, legend=:topleft)
     p = plot!(twinx(p),c=:red,dat1,ylabel=label2,label="NSOM", line=(1,:dash),legend=:topright)
     
     p
@@ -82,7 +91,7 @@ function plotImagwDataEx(mo,dy,imArr,labelT,fi,ArrAmp,ArrFase,YArr,j,cm)
     plot(pIm,pDat, size=(1200,500))
 end
 
-function plot3Ddata(mo,dy,i,zArr,nEl,cm,zlb,ϕ,θ)
+function plot3Ddata(mo,dy,i,zArr,nEl,cm,zlb,ϕ,θ,micr=false)
     x,y = 1:size(zArr,1),1:size(zArr,2)
     AtrM = get_Attributes(mo,dy,i)
     
@@ -91,7 +100,11 @@ function plot3Ddata(mo,dy,i,zArr,nEl,cm,zlb,ϕ,θ)
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl; yΔ₁,yΔ₂  = (x[end]-x[1])/nEl, (yEnd-yBeg)/nEl
 
     xArr,yArr = ndgrid(size(zArr,1),size(zArr,2));
-    p = surface(yArr,xArr,zArr,c=cm,camera=(ϕ,θ),colorbar=:none, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd))),
-        yticks = (x[1]:yΔ₁:x[end], string.(collect(yBeg:yΔ₂:yEnd))), xlabel = L"X ~[nm]", ylabel = L"Y ~[nm]",zlabel = zlb,xguidefontrotation = abs(ϕ^3/90^2),yguidefontrotation = abs((90-ϕ)^3/90^2), zguidefontrotation=90)
+
+    fc = micr ? 1000 : 1
+    unit = micr ? L"[\mu m]" : L"[n m]"
+
+    p = surface(yArr,xArr,zArr,c=cm,camera=(ϕ,θ),colorbar=:none, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd)./fc)),
+        yticks = (x[1]:yΔ₁:x[end], string.(collect(yBeg:yΔ₂:yEnd)./fc)), xlabel = L"X ~"*unit, ylabel = L"Y ~"*unit,zlabel = zlb,xguidefontrotation = abs(ϕ^3/90^2),yguidefontrotation = abs((90-ϕ)^3/90^2), zguidefontrotation=90)
     p
 end
