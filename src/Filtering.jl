@@ -1,4 +1,4 @@
-using FFTW,LsqFit,Dierckx,Statistics,SparseArrays
+using LinearAlgebra,FFTW,LsqFit,Dierckx,Statistics,SparseArrays
 
 Recf(n0,nC,x) = (x ≤ n0+nC)&&(x ≥ n0-nC) ? 1 : 0 
 
@@ -60,6 +60,12 @@ function getFiltImag1(datIm,n0,nct,option,n=0)
         datFiltr[i,:] = filtrD
     end
     datFiltr
+end
+
+function filterSVD(image,r)
+    U,Σ,Vᵀ = svd(image)
+
+    U[:,1:r]*Diagonal(Σ[1:r])*Vᵀ[:,1:r]'
 end
 
 function fitFrecData(dataVib,pA,pF)
