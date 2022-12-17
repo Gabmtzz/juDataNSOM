@@ -1,4 +1,4 @@
-using Interpolations,LaTeXStrings,Measures,LazyGrids,Plots; pyplot()
+using Interpolations,LaTeXStrings,Measures,LazyGrids,Plots
 
 function plotImag(mo,dy,datIm,cm,labelT,nEl,i,micr=false)
     x = 1:1:size(datIm,1); y = 1:1:size(datIm,2)

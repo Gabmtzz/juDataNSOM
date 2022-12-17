@@ -117,3 +117,15 @@ function EraseBL(y,λ,ratio,itrM)
     end
     return z,e
 end
+
+function getImagewoB(λ,ratio,itrM,image)
+    ImagwoB = zeros(size(image))
+
+    for i ∈ axes(image,1)
+        y = image[i,:]
+        z,_ = EraseBL(y,λ,ratio,itrM)
+        ImagwoB[i,:] = z-y
+    end
+
+    ImagwoB .- minimum(ImagwoB)
+end
