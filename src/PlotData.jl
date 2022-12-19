@@ -41,7 +41,7 @@ function PlotFilter(PSD,indices)
     p
 end
 
-function PlotCompProfiles(mo,dy,i,dat1,dat2,label1,label2,nEl,micr=false)
+function PlotCompProfiles(mo,dy,i,dat1,dat2,label1,label2,nEl,labelleg1="AFM",labelleg2="NSOM",micr=false)
     y = 1:1:size(dat1,1)
     AtrM = get_Attributes(mo,dy,i)
     xBeg,xEnd = AtrM[1,2],AtrM[5,2];
@@ -51,8 +51,8 @@ function PlotCompProfiles(mo,dy,i,dat1,dat2,label1,label2,nEl,micr=false)
     fc = micr ? 1000 : 1
     unit = micr ? L"[\mu m]" : L"[n m]"
     
-    p = plot(dat2, c=:black, label="AFM", xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd)./fc)), xlabel = L"X ~"*unit, ylabel = label1, legend=:topleft)
-    p = plot!(twinx(p),c=:red,dat1,ylabel=label2,label="NSOM", line=(1,:dash),legend=:topright)
+    p = plot(dat2, c=:black, label=labelleg1, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd)./fc)), xlabel = L"X ~"*unit, ylabel = label1, legend=:topleft)
+    p = plot!(twinx(p),c=:red,dat1,ylabel=label2,label=labelleg2, line=(1,:dash),legend=:topright)
     
     p
     
