@@ -61,3 +61,13 @@ function GetDifAmp(DataS,imArr)
     end
     imDif
 end
+
+function CalculateCrossCorr(image1,image2)
+    Im1f,Im2f = fft(image1),fft(image2)
+
+    R = (Im1f.*conj.(Im2f)) ./ abs.(Im1f.*conj.(Im2f))
+    r = ifft(R); r = real.(r)
+    rCoef = maximum(r)
+
+    r,rCoef
+end
