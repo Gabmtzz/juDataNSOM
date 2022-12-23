@@ -17,7 +17,7 @@ function plotImag(mo,dy,datIm,cm,labelT,nEl,i,micr=false)
     unit = micr ? L"[\mu m]" : L"[n m]"
 
     heatmap(y2,x2,z2', c = cm, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd)./fc)),
-    yticks = (x[1]:yΔ₁:x[end], string.(collect(yBeg:yΔ₂:yEnd)./fc)), xlabel = L"X ~"*unit, ylabel = L"Y ~"*unit, colorbar_title = labelT )
+    yticks = (x[1]:yΔ₁:x[end], string.(collect(yBeg:yΔ₂:yEnd)./fc)), xlabel = L"X ~"*unit, ylabel = L"Y ~"*unit,colorbarformatters = :scientific,colorbar_title = labelT )
 
 end
 
@@ -31,7 +31,7 @@ function plotProfile(mo,dy,datIm, labelT,nEl,index,i,micr=false)
     fc = micr ? 1000 : 1
     unit = micr ? L"[\mu m]" : L"[n m]"
 
-    plot(datIm[index,:], c=:black, label=:none, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd)./fc)), xlabel = L"X ~"*unit, ylabel = labelT)
+    plot(datIm[index,:], c=:black, label=:none, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd)./fc)), xlabel = L"X ~"*unit, ylabel = labelT,yformatter=:auto)
 end
 
 function PlotFilter(PSD,indices)
@@ -51,8 +51,8 @@ function PlotCompProfiles(mo,dy,i,dat1,dat2,label1,label2,nEl,labelleg1="AFM",la
     fc = micr ? 1000 : 1
     unit = micr ? L"[\mu m]" : L"[n m]"
     
-    p = plot(dat2, c=:black, label=labelleg1, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd)./fc)), xlabel = L"X ~"*unit, ylabel = label1, legend=:topleft)
-    p = plot!(twinx(p),c=:red,dat1,ylabel=label2,label=labelleg2, line=(1,:dash),legend=:topright)
+    p = plot(dat2, c=:black, label=labelleg1, xticks = (y[1]:xΔ₁:y[end], string.(collect(xBeg:xΔ₂:xEnd)./fc)), xlabel = L"X ~"*unit, ylabel = label1, legend=:topleft,yformatter=:auto)
+    p = plot!(twinx(p),c=:red,dat1,ylabel=label2,label=labelleg2, line=(1,:dash),legend=:topright,yformatter=:auto)
     
     p
     

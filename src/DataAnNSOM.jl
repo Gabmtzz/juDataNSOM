@@ -4,5 +4,6 @@ module DataAnNSOM
     include("PlotData.jl")
     include("dataExt.jl")
     include("Filtering.jl")
+    include("PlotwLatex.jl")
     
 end # module DataAnNSOM
