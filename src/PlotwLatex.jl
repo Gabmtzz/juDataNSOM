@@ -89,4 +89,12 @@ function plotCompPlorilesLx(mo,dy,i,prof1,prof2,label1,label2,nEl,labelleg1="AFM
     )
 
     )
+    p
+end
+
+function saveFilePlot(dir,filename,pl)
+    file=dir*filename
+
+    pgfsave(file,pl)
+    
 end
