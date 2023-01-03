@@ -1,13 +1,13 @@
 using Interpolations,LaTeXStrings,Measures,LazyGrids,Plots
 
-function plotImag(mo,dy,datIm,cm,labelT,nEl,i,micr=false)
+function plotImag(mo,dy,yr,datIm,cm,labelT,nEl,i,micr=false)
     x = 1:1:size(datIm,1); y = 1:1:size(datIm,2)
     itp = LinearInterpolation((x,y),datIm)
 
     x2 = range(extrema(x)..., length=300); y2 = range(extrema(y)..., length=900)
     z2 = [itp(x,y) for y in y2, x in x2]
 
-    AtrM = get_Attributes(mo,dy,i)
+    AtrM = get_Attributes(mo,dy,yr,i)
     
     xBeg,xEnd = AtrM[1,2],AtrM[5,2]; yBeg,yEnd = AtrM[2,2],AtrM[6,2]   
 
@@ -21,9 +21,9 @@ function plotImag(mo,dy,datIm,cm,labelT,nEl,i,micr=false)
 
 end
 
-function plotProfile(mo,dy,datIm, labelT,nEl,index,i,micr=false)
+function plotProfile(mo,dy,yr,datIm, labelT,nEl,index,i,micr=false)
     y = 1:1:size(datIm,2)
-    AtrM = get_Attributes(mo,dy,i)
+    AtrM = get_Attributes(mo,dy,yr,i)
     xBeg,xEnd = AtrM[1,2],AtrM[5,2];
     
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl
@@ -41,9 +41,9 @@ function PlotFilter(PSD,indices)
     p
 end
 
-function PlotCompProfiles(mo,dy,i,dat1,dat2,label1,label2,nEl,labelleg1="AFM",labelleg2="NSOM",micr=false)
+function PlotCompProfiles(mo,dy,yr,i,dat1,dat2,label1,label2,nEl,labelleg1="AFM",labelleg2="NSOM",micr=false)
     y = 1:1:size(dat1,1)
-    AtrM = get_Attributes(mo,dy,i)
+    AtrM = get_Attributes(mo,dy,yr,i)
     xBeg,xEnd = AtrM[1,2],AtrM[5,2];
         
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl
@@ -76,7 +76,7 @@ function plotFit(datX,datY,label,fitY,error)
     p
 end
 
-function plotImagwDataEx(mo,dy,imArr,labelT,fi,ArrAmp,ArrFase,YArr,j,cm)
+function plotImagwDataEx(mo,dy,yr,imArr,labelT,fi,ArrAmp,ArrFase,YArr,j,cm)
     AmplArrPl = []; AmplArrFs = [] 
 
     for i ∈ YArr
@@ -87,13 +87,13 @@ function plotImagwDataEx(mo,dy,imArr,labelT,fi,ArrAmp,ArrFase,YArr,j,cm)
     
     pA = plot(AmplArrPl..., size=(600,300), margin=3mm); pF = plot(AmplArrFs..., size=(600,300), margin=3mm)
     pDat = plot(pA,pF, layout=(2,1), size =(900,450))
-    pIm = plotImag(mo,dy,imArr/1000,cm, labelT,5,fi); pIm = vline!([j j], c=:red, line=(2,:dash), label=:none)
+    pIm = plotImag(mo,dy,yr,imArr/1000,cm, labelT,5,fi); pIm = vline!([j j], c=:red, line=(2,:dash), label=:none)
     plot(pIm,pDat, size=(1200,500))
 end
 
-function plot3Ddata(mo,dy,i,zArr,nEl,cm,zlb,ϕ,θ,micr=false)
+function plot3Ddata(mo,dy,yr,i,zArr,nEl,cm,zlb,ϕ,θ,micr=false)
     x,y = 1:size(zArr,1),1:size(zArr,2)
-    AtrM = get_Attributes(mo,dy,i)
+    AtrM = get_Attributes(mo,dy,yr,i)
     
     xBeg,xEnd = AtrM[1,2],AtrM[5,2]; yBeg,yEnd = AtrM[2,2],AtrM[6,2]   
 

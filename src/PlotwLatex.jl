@@ -1,9 +1,9 @@
 using PGFPlotsX
 
-function plotImagLx(mo,dy,image,labelC,unitC,nEl,i,micr=false)
+function plotImagLx(mo,dy,yr,image,labelC,unitC,nEl,i,micr=false)
     x,y = collect(axes(image,1)),collect(axes(image,2))
 
-    AtrM = get_Attributes(mo,dy,i)
+    AtrM = get_Attributes(mo,dy,yr,i)
     xBeg,xEnd = AtrM[1,2],AtrM[5,2]; yBeg,yEnd = AtrM[2,2],AtrM[6,2]   
 
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl; yΔ₁,yΔ₂  = (x[end]-x[1])/nEl, (yEnd-yBeg)/nEl
@@ -39,10 +39,10 @@ function plotImagLx(mo,dy,image,labelC,unitC,nEl,i,micr=false)
     p
 end
 
-function plotCompPlorilesLx(mo,dy,i,prof1,prof2,label1,label2,nEl,labelleg1="AFM",labelleg2="NSOM",micr=false)
+function plotCompPlorilesLx(mo,dy,yr,i,prof1,prof2,label1,label2,nEl,labelleg1="AFM",labelleg2="NSOM",micr=false)
     x = collect(axes(prof1,1))
 
-    AtrM = get_Attributes(mo,dy,i)
+    AtrM = get_Attributes(mo,dy,yr,i)
     xBeg,xEnd = AtrM[1,2],AtrM[5,2];
     xΔ₁,xΔ₂  = (x[end]-x[1])/nEl, (xEnd-xBeg)/nEl
 

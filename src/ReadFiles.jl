@@ -1,7 +1,24 @@
 using HDF5,DelimitedFiles
 
-function get_dir(mo,dy)
+function get_dirYr(mo,dy,yr)
     direction ="/home/martinez/Documents/dataNSOM"
+    folder = "med_"*string(yr,pad=2)
+    elementDir = cd(readdir,direction)
+    indexF = findall(elementDir .== folder)
+
+    try
+        indexF = indexF[1]
+        direction = direction*"/"*folder
+        dirFull = get_dir(mo,dy,direction)
+        dirFull
+    catch
+        error("The folder does not exist.")
+    end
+
+end
+
+function get_dir(mo,dy,direction)
+    #direction ="/home/martinez/Documents/dataNSOM"
     folder = "med_"*string(mo,pad=2)*"_"*string(dy,pad=2)
     elementDir = cd(readdir,direction)
     indexFol = findall(elementDir .==folder)
@@ -16,8 +33,8 @@ function get_dir(mo,dy)
 
 end
 
-function get_filesNames(mo,dy)
-    direction = get_dir(mo,dy)
+function get_filesNames(mo,dy,yr)
+    direction = get_dirYr(mo,dy,yr)
     NameFiles = cd(readdir,direction)
     if ~isempty(NameFiles)
         return NameFiles,direction
@@ -26,8 +43,8 @@ function get_filesNames(mo,dy)
     end
 end
 
-function read_FileData(mo,dy,ind)
-    NameFiles,direction = get_filesNames(mo,dy)
+function read_FileData(mo,dy,yr,ind)
+    NameFiles,direction = get_filesNames(mo,dy,yr)
 
     cd(direction)
     fname = direction*"/"*NameFiles[ind]
@@ -45,8 +62,8 @@ function read_FileData(mo,dy,ind)
 
 end
 
-function get_Attributes(mo,dy,i)
-    NameFiles, direction = get_filesNames(mo,dy)
+function get_Attributes(mo,dy,yr,i)
+    NameFiles, direction = get_filesNames(mo,dy,yr)
 
     cd(direction)
     fname = direction*"/"*NameFiles[i]
