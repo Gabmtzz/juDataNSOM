@@ -58,6 +58,8 @@ function read_FileData(mo,dy,yr,ind)
     dataExt = keys(fNs[groupF[2]])
     datAmp = read(fNs[groupF[2]*"/"*dataExt[1]]); datFase = read(fNs[groupF[2]*"/"*dataExt[2]]) 
 
+    close(fNs)
+
     return datMeas,transpose(datAmp),transpose(datFase)
 
 end
@@ -79,7 +81,7 @@ function get_Attributes(mo,dy,yr,i)
         
         push!(AttrVal,read_attribute(datMeasAtr,nameAttr[i]))
     end
-    
+    close(fNs)
     hcat(nameAttr,AttrVal)
 end
 
@@ -94,7 +96,7 @@ function getDataExp(data)
 end
 
 function getVibData(i)
-    dirVib = "/home/martinez/Documents/frec/archivos/"
+    dirVib = "/home/martinez/Documents/dataNSOM/frec/"
     names = cd(readdir,dirVib)
     nameFil = names[i]
     dataVib = readdlm(dirVib*nameFil)
