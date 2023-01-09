@@ -1,6 +1,6 @@
 using PGFPlotsX
 
-function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false)
+function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false,bk=true)
     x,y = collect(axes(image,1)),collect(axes(image,2))
 
     AtrM = get_Attributes(mo,dy,yr,i)
@@ -11,30 +11,58 @@ function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false)
     fc = micr ? 1000 : 1
     unit = micr ? L"[\mu m]" : L"[n m]"
 
-    p = @pgf TikzPicture({scale=1.5}, Axis(
-        {
-            view = (ϕ,θ),
-            enlargelimits=false,
-            "colormap/blackwhite",
-    		"axis on top",
-            colorbar,
-            xlabel = L"X~"*unit,
-            ylabel = L"Y~"*unit,
-            "colorbar style"={title=labelC, ylabel=unitC},
-            xtick = y[1]:xΔ₁:y[end],
-            xticklabels = string.(collect(xBeg:xΔ₂:xEnd)./fc),
-            ytick = x[1]:yΔ₁:x[end],
-            yticklabels = string.(collect(yBeg:yΔ₂:yEnd)./fc),
-        },
-        Plot3(
-            {
-                surf,
-                shader="interp",
-            },
-            Table(y,x,image')
+    if bk
 
-        )
-    ))
+        p = @pgf TikzPicture({scale=1.5}, Axis(
+            {
+                view = (ϕ,θ),
+                enlargelimits=false,
+                "colormap/blackwhite",
+        		"axis on top",
+                colorbar,
+                xlabel = L"X~"*unit,
+                ylabel = L"Y~"*unit,
+                "colorbar style"={title=labelC, ylabel=unitC},
+                xtick = y[1]:xΔ₁:y[end],
+                xticklabels = string.(collect(xBeg:xΔ₂:xEnd)./fc),
+                ytick = x[1]:yΔ₁:x[end],
+                yticklabels = string.(collect(yBeg:yΔ₂:yEnd)./fc),
+            },
+            Plot3(
+                {
+                    surf,
+                    shader="interp",
+                },
+                Table(y,x,image')
+
+            )
+        ))
+    else
+        p = @pgf TikzPicture({scale=1.5}, Axis(
+            {
+                view = (ϕ,θ),
+                enlargelimits=false,
+                "colormap/viridis",
+        		"axis on top",
+                colorbar,
+                xlabel = L"X~"*unit,
+                ylabel = L"Y~"*unit,
+                "colorbar style"={title=labelC, ylabel=unitC},
+                xtick = y[1]:xΔ₁:y[end],
+                xticklabels = string.(collect(xBeg:xΔ₂:xEnd)./fc),
+                ytick = x[1]:yΔ₁:x[end],
+                yticklabels = string.(collect(yBeg:yΔ₂:yEnd)./fc),
+            },
+            Plot3(
+                {
+                    surf,
+                    shader="interp",
+                },
+                Table(y,x,image')
+        
+            )
+        ))
+    end
 
     p
 end

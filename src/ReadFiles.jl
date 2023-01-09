@@ -85,6 +85,29 @@ function get_Attributes(mo,dy,yr,i)
     hcat(nameAttr,AttrVal)
 end
 
+function getPromData(mo,dy,yr,mMult,mLock,inArr)
+    data,_ = read_FileData(mo,dy,yr,inArr[1])
+    ImAFM1,_ = DataAnNSOM.getDataExp(data)
+
+    promArr = zeros(3,size(ImAFM1,1),size(ImAFM1,2))
+
+    for i ∈ inArr
+        data,_ = DataAnNSOM.read_FileData(mo,dy,yr,i);
+        ImAFM,ImLock,ImMult = DataAnNSOM.getDataExp(data)
+        promArr[1,:,:] += ImAFM
+        promArr[2,:,:] += ImLock
+        promArr[3,:,:] += ImMult
+    end
+    promArr = promArr ./ length(inArr)
+
+    promAFM,promLock,promMult = promArr[1,:,:],promArr[2,:,:],promArr[3,:,:]
+    promLock,promMult = promLock.-mLock,promMult.-mMult
+
+    promDiv = promLock./promMult
+
+    return promAFM,promLock,promMult,promDiv
+end
+
 function getDataExp(data)
     if size(data,1) ==3
         ImAFM,ImNSOM,ImMult = data[1,:,:]/1000,data[2,:,:],-data[3,:,:]
