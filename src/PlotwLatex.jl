@@ -146,7 +146,7 @@ function PlotCompfrecDatLx(dataVib,xL=0.9,yL=0.8)
         legend_style={at = Coordinate(xL,yL),nodes = {scale=0.5, transform_shape},font=raw"\large",draw="none"},
         "axis y line*" = "right",
         "axis x line"="none", 
-        ylabel = L"Fase~[deg]",
+        ylabel = L"Fase~[\circ]",
     },
     [raw"\textsc",
     {raw"\addlegendimage{/pgfplots/refstyle=PL1}"},
