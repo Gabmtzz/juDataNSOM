@@ -1,6 +1,6 @@
 using PGFPlotsX
 
-function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false,bk=true)
+function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false,bk=true,α=0)
     x,y = collect(axes(image,1)),collect(axes(image,2))
 
     AtrM = get_Attributes(mo,dy,yr,i)
@@ -24,9 +24,9 @@ function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false,bk=true)
                 ylabel = L"Y~"*unit,
                 "colorbar style"={title=labelC, ylabel=unitC},
                 xtick = y[1]:xΔ₁:y[end],
-                xticklabels = string.(collect(xBeg:xΔ₂:xEnd)./fc),
+                xticklabels = string.(round.((collect(xBeg:xΔ₂:xEnd)./fc).*cos((π*α)/180),digits = 1)),
                 ytick = x[1]:yΔ₁:x[end],
-                yticklabels = string.(collect(yBeg:yΔ₂:yEnd)./fc),
+                yticklabels = string.(round.((collect(yBeg:yΔ₂:yEnd)./fc).*cos((π*α)/180),digits = 1)),
             },
             Plot3(
                 {
@@ -49,9 +49,9 @@ function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false,bk=true)
                 ylabel = L"Y~"*unit,
                 "colorbar style"={title=labelC, ylabel=unitC},
                 xtick = y[1]:xΔ₁:y[end],
-                xticklabels = string.(collect(xBeg:xΔ₂:xEnd)./fc),
+                xticklabels = string.(round.((collect(xBeg:xΔ₂:xEnd)./fc).*cos((π*α)/180),digits = 1)),
                 ytick = x[1]:yΔ₁:x[end],
-                yticklabels = string.(collect(yBeg:yΔ₂:yEnd)./fc),
+                yticklabels = string.(round.((collect(yBeg:yΔ₂:yEnd)./fc).*cos((π*α)/180),digits = 1)),
             },
             Plot3(
                 {
@@ -67,7 +67,7 @@ function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false,bk=true)
     p
 end
 
-function plotCompPlorilesLx(mo,dy,yr,i,prof1,prof2,label1,label2,nEl,labelleg1="AFM",labelleg2="NSOM",micr=false,xL=0.6,yL=0.9)
+function plotCompPlorilesLx(mo,dy,yr,i,prof1,prof2,label1,label2,nEl,labelleg1="AFM",labelleg2="NSOM",micr=false,xL=0.6,yL=0.9,α=0)
     x = collect(axes(prof1,1))
 
     AtrM = get_Attributes(mo,dy,yr,i)
@@ -83,7 +83,7 @@ function plotCompPlorilesLx(mo,dy,yr,i,prof1,prof2,label1,label2,nEl,labelleg1="
             ylabel=label1,
             xlabel = L"X~"*unit,
             xtick = x[1]:xΔ₁:x[end],
-            xticklabels = string.(collect(xBeg:xΔ₂:xEnd)./fc),
+            xticklabels = string.(round.((collect(xBeg:xΔ₂:xEnd)./fc).*cos((π*α)/180),digits = 1)),
             ymax = maximum(prof1)+0.25*maximum(prof1)
         },
         Plot(
