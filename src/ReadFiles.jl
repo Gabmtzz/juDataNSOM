@@ -94,6 +94,8 @@ function getPromData(mo,dy,yr,mMult,mLock,inArr)
     for i ∈ inArr
         data,_ = DataAnNSOM.read_FileData(mo,dy,yr,i);
         ImAFM,ImLock,ImMult = DataAnNSOM.getDataExp(data)
+        ImAFM = correct100(ImAFM,mo,dy,yr,i)
+
         promArr[1,:,:] += ImAFM
         promArr[2,:,:] += ImLock
         promArr[3,:,:] += ImMult
@@ -116,6 +118,22 @@ function getDataExp(data)
         ImAFM = data[1,:,:]/1000
         return  ImAFM
     end
+end
+
+function correct100(imAFM,mo,dy,yr,i)
+
+    AtrM = DataAnNSOM.get_Attributes(mo,dy,yr,i)
+    xBeg,xEnd = AtrM[1,2],AtrM[5,2]; yBeg,yEnd = AtrM[2,2],AtrM[6,2]   
+    step=AtrM[7,2]
+    Xline =  collect(xBeg:step:xEnd)
+    xst = findall(Xline .== 100000)
+
+    if ~isempty(xst)
+        xst = xst[1]
+        Δs = imAFM[:,xst-1]-imAFM[:,xst]
+        imAFM[:,xst:end] = imAFM[:,xst:end] .+ Δs
+    end
+    imAFM
 end
 
 function getVibData(i)
