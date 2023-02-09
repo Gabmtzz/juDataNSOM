@@ -52,11 +52,18 @@ function read_FileData(mo,dy,yr,ind)
 
     groupF = keys(fNs)
 
-    dataSm = keys(fNs[groupF[1]])
-    datMeas = read(fNs[groupF[1]*"/"*dataSm[1]])
+    if length(groupF) ==2
+        dataSm = keys(fNs[groupF[1]])
+        datMeas = read(fNs[groupF[1]*"/"*dataSm[1]])
 
-    dataExt = keys(fNs[groupF[2]])
-    datAmp = read(fNs[groupF[2]*"/"*dataExt[1]]); datFase = read(fNs[groupF[2]*"/"*dataExt[2]]) 
+        dataExt = keys(fNs[groupF[2]])
+        datAmp = read(fNs[groupF[2]*"/"*dataExt[1]]); datFase = read(fNs[groupF[2]*"/"*dataExt[2]]) 
+        #return datMeas,transpose(datAmp),transpose(datFase)
+    elseif length(groupF) ==1
+        datMeas = read(fNs[groupF[1]])
+        datAmp,datFase = zeros(10,10),zeros(10,10)
+        #return datMeas
+    end
 
     close(fNs)
 
@@ -72,9 +79,16 @@ function get_Attributes(mo,dy,yr,i)
     fNs = h5open(fname,"r")
     
     groupF = keys(fNs)
-    dataSm = keys(fNs[groupF[1]])
-    datMeasAtr = fNs[groupF[1]*"/"*dataSm[1]]
-    nameAttr = keys(attributes(datMeasAtr))
+    
+    if length(groupF) == 2
+        dataSm = keys(fNs[groupF[1]])
+        datMeasAtr = fNs[groupF[1]*"/"*dataSm[1]]
+        nameAttr = keys(attributes(datMeasAtr))
+    elseif length(groupF) == 1
+        datMeasAtr = fNs[groupF[1]]
+        nameAttr = keys(attributes(datMeasAtr))
+    end
+
     AttrVal = []
     
     for i ∈ eachindex(nameAttr)
