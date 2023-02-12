@@ -52,7 +52,7 @@ function read_FileData(mo,dy,yr,ind)
 
     groupF = keys(fNs)
 
-    if length(groupF) ==2
+    if length(groupF) ≥ 2
         dataSm = keys(fNs[groupF[1]])
         datMeas = read(fNs[groupF[1]*"/"*dataSm[1]])
 
@@ -80,7 +80,7 @@ function get_Attributes(mo,dy,yr,i)
     
     groupF = keys(fNs)
     
-    if length(groupF) == 2
+    if length(groupF) ≥ 2
         dataSm = keys(fNs[groupF[1]])
         datMeasAtr = fNs[groupF[1]*"/"*dataSm[1]]
         nameAttr = keys(attributes(datMeasAtr))
