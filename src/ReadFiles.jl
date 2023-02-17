@@ -158,3 +158,28 @@ function getVibData(i)
 
     return dataVib,nameFil
 end
+
+function export_Data(mo,dy,yr,fi,data,label="",bucket="/home/martinez/Desktop/ArchivosDr/",ext=".txt")
+    
+    
+    Name = ["datos_AFM"; "datos_Lockin"; "datos_Mult"; "datos_Div"]
+
+    Name = Name.*label
+
+    folder = "med_"*string(mo,base=10, pad=2)*"_"*string(dy,base=10, pad=2)
+    dir = bucket
+
+    folders = cd(readdir,dir)
+
+    if isempty(findall(folders .== folder))
+        mkdir(dir*folder)
+    end
+
+    for i in eachindex(Name)
+        dat,nam = data[:,:,i],Name[i]
+        writedlm(dir*folder*"/"*nam*ext,dat')
+    end
+    atr = get_Attributes(mo,dy,yr,fi)
+    nameatr = "atributos"*label*".txt"
+    writedlm(dir*folder*"/"*nameatr, atr)
+end
