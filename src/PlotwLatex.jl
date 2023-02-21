@@ -4,7 +4,12 @@ function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false,bk=true,�
     x,y = collect(axes(image,1)),collect(axes(image,2))
 
     AtrM = get_Attributes(mo,dy,yr,i)
-    xBeg,xEnd = AtrM[1,2],AtrM[5,2]; yBeg,yEnd = AtrM[2,2],AtrM[6,2]   
+
+    if size(AtrM,1) == 7
+        xBeg,xEnd = AtrM[1,2],AtrM[5,2]; yBeg,yEnd = AtrM[2,2],AtrM[6,2]   
+    elseif size(AtrM,1) == 9
+        xBeg,xEnd = AtrM[3,2],AtrM[7,2]; yBeg,yEnd = AtrM[4,2],AtrM[8,2]   
+    end 
 
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl; yΔ₁,yΔ₂  = (x[end]-x[1])/nEl, (yEnd-yBeg)/nEl
 
@@ -71,7 +76,12 @@ function plotCompPlorilesLx(mo,dy,yr,i,prof1,prof2,label1,label2,nEl,labelleg1="
     x = collect(axes(prof1,1))
 
     AtrM = get_Attributes(mo,dy,yr,i)
-    xBeg,xEnd = AtrM[1,2],AtrM[5,2];
+    if size(AtrM,1) == 7
+        xBeg,xEnd = AtrM[1,2],AtrM[5,2]  
+    elseif size(AtrM,1) == 9
+        xBeg,xEnd = AtrM[3,2],AtrM[7,2]   
+    end
+    
     xΔ₁,xΔ₂  = (x[end]-x[1])/nEl, (xEnd-xBeg)/nEl
 
     fc = micr ? 1000 : 1

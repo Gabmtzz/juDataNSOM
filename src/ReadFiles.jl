@@ -137,8 +137,15 @@ end
 function correct100(imAFM,mo,dy,yr,i)
 
     AtrM = DataAnNSOM.get_Attributes(mo,dy,yr,i)
-    xBeg,xEnd = AtrM[1,2],AtrM[5,2]; yBeg,yEnd = AtrM[2,2],AtrM[6,2]   
-    step=AtrM[7,2]
+
+    if size(AtrM,1) == 7
+        xBeg,xEnd = AtrM[1,2],AtrM[5,2]; yBeg,yEnd = AtrM[2,2],AtrM[6,2]   
+        step=AtrM[7,2]
+    elseif size(AtrM,1) == 9
+        xBeg,xEnd = AtrM[3,2],AtrM[7,2]; yBeg,yEnd = AtrM[4,2],AtrM[8,2]   
+            step=AtrM[9,2]
+    end
+
     Xline =  collect(xBeg:step:xEnd)
     xst = findall(Xline .== 100000)
 
@@ -166,7 +173,7 @@ function export_Data(mo,dy,yr,fi,data,label="",bucket="/home/martinez/Desktop/Ar
 
     Name = Name.*label
 
-    folder = "med_"*string(mo,base=10, pad=2)*"_"*string(dy,base=10, pad=2)
+    folder = "med_"*string(mo,base=10, pad=2)*"_"*string(dy,base=10, pad=2)*"_"*string(fi,base=10, pad=2)
     dir = bucket
 
     folders = cd(readdir,dir)
