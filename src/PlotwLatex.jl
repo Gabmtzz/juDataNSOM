@@ -1,7 +1,8 @@
 using PGFPlotsX
 
-function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false,bk=true,α=0)
-    x,y = collect(axes(image,1)),collect(axes(image,2))
+function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false,bk=true,α=0, rangeX = 1:size(image,2) )
+    ImPlot = image[:,rangeX]
+    x,y = collect(axes(ImPlot,1)),collect(axes(ImPlot,2))
 
     AtrM = get_Attributes(mo,dy,yr,i)
 
@@ -10,6 +11,10 @@ function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false,bk=true,�
     elseif size(AtrM,1) == 9
         xBeg,xEnd = AtrM[3,2],AtrM[7,2]; yBeg,yEnd = AtrM[4,2],AtrM[8,2]   
     end 
+
+    if length(rangeX) < size(image,2)
+        xEnd = (xEnd*length(rangeX)) / size(image,2) 
+    end
 
     xΔ₁,xΔ₂  = (y[end]-y[1])/nEl, (xEnd-xBeg)/nEl; yΔ₁,yΔ₂  = (x[end]-x[1])/nEl, (yEnd-yBeg)/nEl
 
@@ -38,7 +43,7 @@ function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false,bk=true,�
                     surf,
                     shader="interp",
                 },
-                Table(y,x,image')
+                Table(y,x,ImPlot')
 
             )
         ))
@@ -63,7 +68,7 @@ function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false,bk=true,�
                     surf,
                     shader="interp",
                 },
-                Table(y,x,image')
+                Table(y,x,ImPlot')
         
             )
         ))
@@ -72,14 +77,19 @@ function plotImagLx(mo,dy,yr,image,ϕ,θ,labelC,unitC,nEl,i,micr=false,bk=true,�
     p
 end
 
-function plotCompPlorilesLx(mo,dy,yr,i,prof1,prof2,label1,label2,nEl,labelleg1="AFM",labelleg2="NSOM",micr=false,xL=0.6,yL=0.9,α=0)
-    x = collect(axes(prof1,1))
+function plotCompPlorilesLx(mo,dy,yr,i,prof1,prof2,label1,label2,nEl,labelleg1="AFM",labelleg2="NSOM",micr=false,xL=0.6,yL=0.9,α=0, rangeX = 1:length(prof1))
+    profIm1, profIm2 = prof1[rangeX],prof2[rangeX]
+    x = collect(axes(profIm1,1))
 
     AtrM = get_Attributes(mo,dy,yr,i)
     if size(AtrM,1) == 7
         xBeg,xEnd = AtrM[1,2],AtrM[5,2]  
     elseif size(AtrM,1) == 9
         xBeg,xEnd = AtrM[3,2],AtrM[7,2]   
+    end
+
+    if length(rangeX) < length(prof1)
+        xEnd = (xEnd*length(rangeX)) / length(prof1)
     end
     
     xΔ₁,xΔ₂  = (x[end]-x[1])/nEl, (xEnd-xBeg)/nEl
@@ -94,7 +104,7 @@ function plotCompPlorilesLx(mo,dy,yr,i,prof1,prof2,label1,label2,nEl,labelleg1="
             xlabel = L"X~"*unit,
             xtick = x[1]:xΔ₁:x[end],
             xticklabels = string.(round.((collect(xBeg:xΔ₂:xEnd)./fc).*cos((π*α)/180),digits = 1)),
-            ymax = maximum(prof1)+0.25*maximum(prof1)
+            ymax = maximum(profIm1)+0.25*maximum(profIm1)
         },
         Plot(
         {
@@ -102,7 +112,7 @@ function plotCompPlorilesLx(mo,dy,yr,i,prof1,prof2,label1,label2,nEl,labelleg1="
             "solid",
             "line width"="2pt",
         },
-        Table(x,prof1)
+        Table(x,profIm1)
     ),
     raw"\label{PL1}",
     ),
@@ -112,7 +122,7 @@ function plotCompPlorilesLx(mo,dy,yr,i,prof1,prof2,label1,label2,nEl,labelleg1="
         "axis y line*" = "right",
         "axis x line"="none", 
         ylabel=label2,
-        ymax = maximum(prof2)+0.25*maximum(prof2)
+        ymax = maximum(profIm2)+0.25*maximum(profIm2)
     },
     [raw"\textsc",
     {raw"\addlegendimage{/pgfplots/refstyle=PL1}"},
@@ -124,7 +134,7 @@ function plotCompPlorilesLx(mo,dy,yr,i,prof1,prof2,label1,label2,nEl,labelleg1="
             "dashdotted",
             "line width"="2pt",
         },
-        Table(x,prof2)
+        Table(x,profIm2)
     ),
     LegendEntry(labelleg2)
     )
