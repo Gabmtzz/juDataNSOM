@@ -129,3 +129,28 @@ function getImagewoB(λ,ratio,itrM,image)
 
     ImagwoB .- minimum(ImagwoB)
 end
+
+function reshapeImage(image::Matrix{Float64},zigzag::Bool=true)
+    imagr = copy(image)
+    if zigzag
+        
+        ind = findall(iseven.(axes(imagr,2)))
+
+        imagr[:,ind] = reverse(imagr[:,ind],dims=1)
+    end
+    
+     reshape(imagr,(:,1))[:,1]
+end
+
+function returnImage(y::Vector{Float64},image::Matrix{Float64},zigzag::Bool=true)
+    imageR = reshape(y,(size(image)))
+    
+    if zigzag
+        
+        ind = findall(iseven.(axes(imageR,2)))
+
+        imageR[:,ind] = reverse(imageR[:,ind],dims=1)
+    end
+    
+    imageR
+end
