@@ -239,8 +239,8 @@ function PlotCompfrecDatLx(dataVib,xL=0.9,yL=0.8)
   p
 end
 
-function plotprofilesImageLx(ix,iy,mo,dy,yr,i,imAFM,imNSOM,ϕ,θ,xL,yL,nEl,label1,label2,labelC,unitA,unitB,micr=true,α=0, rangeX = 1:size(imAFM,2))
-    ImPlotA = imAFM[:,rangeX]
+function plotprofilesImageLx(ix,iy,mo,dy,yr,i,imAFM,imNSOM,ϕ,θ,xL,yL,nEl,label1,label2,labelC,unitA,unitB,nanoz=false,micr=true,α=0, rangeX = 1:size(imAFM,2))
+    ImPlotA,ImPlotB = imAFM[:,rangeX],imNSOM[:,rangeX]
     x,y = collect(axes(ImPlotA,1)),collect(axes(ImPlotA,2))
 
     AtrM = get_Attributes(mo,dy,yr,i)
@@ -259,9 +259,17 @@ function plotprofilesImageLx(ix,iy,mo,dy,yr,i,imAFM,imNSOM,ϕ,θ,xL,yL,nEl,label
 
     fc = micr ? 1000 : 1
     unit = micr ? L"[\mu m]" : L"[n m]"
+                        
+    if nanoz
+        barLabel = L"Altura~[n m]"
+        ImPlotA = 1000*ImPlotA
+        
+    else
+       barLabel=L"Altura~[\mu m]"
+    end
 
-    profIm1h,profIm2h = imAFM'[ix,:],imNSOM'[ix,:]
-    profIm1v,profIm2v = imAFM'[:,iy],imNSOM'[:,iy]
+    profIm1h,profIm2h = ImPlotA'[ix,:],ImPlotB'[ix,:]
+    profIm1v,profIm2v = ImPlotA'[:,iy],ImPlotB'[:,iy]
 
     pAFM = @pgf Axis(
                 {
@@ -270,7 +278,7 @@ function plotprofilesImageLx(ix,iy,mo,dy,yr,i,imAFM,imNSOM,ϕ,θ,xL,yL,nEl,label
                     "colormap/hot2",
             		"axis on top",
                     "colorbar horizontal",
-                    "colorbar style"={title=labelC, xlabel=L"AFM~[\mu m]",anchor="north west"},
+                    "colorbar style"={title=labelC, xlabel=barLabel,anchor="north west"},
                     xlabel = L"X~"*unit,
                     ylabel = L"Y~"*unit,
                     xtick = y[1]:xΔ₁:y[end],
@@ -283,7 +291,7 @@ function plotprofilesImageLx(ix,iy,mo,dy,yr,i,imAFM,imNSOM,ϕ,θ,xL,yL,nEl,label
                         surf,
                         shader="interp",
                     },
-                    Table(y,x,imAFM')
+                    Table(y,x,ImPlotA')
 
                 ),
                 Plot3(
@@ -294,17 +302,17 @@ function plotprofilesImageLx(ix,iy,mo,dy,yr,i,imAFM,imNSOM,ϕ,θ,xL,yL,nEl,label
                       "dashed"
 
                     },
-                    Table(ix*ones(length(x)),x,imAFM'[ix,:])
+                    Table(ix*ones(length(x)),x,ImPlotA'[ix,:])
                 ),
                 Plot3(
                     {
                       mesh,
-                      color="purple",
+                      color="teal",
                       style="ultra thick",
                       "dashed"
 
                     },
-                    Table(y,iy*ones(length(y)),imAFM'[:,iy])
+                    Table(y,iy*ones(length(y)),ImPlotA'[:,iy])
                 )
             )
 
@@ -328,7 +336,7 @@ function plotprofilesImageLx(ix,iy,mo,dy,yr,i,imAFM,imNSOM,ϕ,θ,xL,yL,nEl,label
                             surf,
                             shader="interp",
                         },
-                        Table(y,x,imNSOM')
+                        Table(y,x,ImPlotB')
 
                     ),
                     Plot3(
@@ -339,7 +347,7 @@ function plotprofilesImageLx(ix,iy,mo,dy,yr,i,imAFM,imNSOM,ϕ,θ,xL,yL,nEl,label
                           "dashed"
 
                         },
-                        Table(ix*ones(length(x)),x,imNSOM'[ix,:])
+                        Table(ix*ones(length(x)),x,ImPlotB'[ix,:])
                     ),
                     Plot3(
                         {
@@ -349,7 +357,7 @@ function plotprofilesImageLx(ix,iy,mo,dy,yr,i,imAFM,imNSOM,ϕ,θ,xL,yL,nEl,label
                           "dashed"
 
                         },
-                        Table(y,iy*ones(length(y)),imNSOM'[:,iy])
+                        Table(y,iy*ones(length(y)),ImPlotB'[:,iy])
                     )
             )
 
@@ -364,7 +372,7 @@ function plotprofilesImageLx(ix,iy,mo,dy,yr,i,imAFM,imNSOM,ϕ,θ,xL,yL,nEl,label
         Pch1 = @pgf Axis(
             {
              "axis y line*" = "left",
-                ylabel=label1,
+                ylabel=barLabel,
                 xlabel = L"X~"*unit,
                 xtick = x[1]:yΔ₁:x[end],
                 xticklabels = string.(round.((collect(xBeg:xΔ₂:xEnd)./fc).*cos((π*α)/180),digits = 1)),
@@ -410,7 +418,7 @@ function plotprofilesImageLx(ix,iy,mo,dy,yr,i,imAFM,imNSOM,ϕ,θ,xL,yL,nEl,label
     Pcv1 = @pgf Axis(
             {
              "axis y line*" = "left",
-                ylabel=label1,
+                ylabel=barLabel,
                 xlabel = L"Y~"*unit,
                 xtick =  y[1]:xΔ₁:y[end],
                 xticklabels = string.(round.((collect(yBeg:yΔ₂:yEnd)./fc).*cos((π*α)/180),digits = 1)),
@@ -418,7 +426,7 @@ function plotprofilesImageLx(ix,iy,mo,dy,yr,i,imAFM,imNSOM,ϕ,θ,xL,yL,nEl,label
             },
             Plot(
             {
-                color="purple",
+                color="teal",
                 "solid",
                 "line width"="2pt",
             },
